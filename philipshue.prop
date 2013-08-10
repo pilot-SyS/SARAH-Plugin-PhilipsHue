@@ -1,0 +1,8 @@
+{
+  "modules": { 
+    "philipshue": {
+      "description": "Module pour Lampes Philips HUE",
+      "version": "0.1"
+    }
+  }
+}

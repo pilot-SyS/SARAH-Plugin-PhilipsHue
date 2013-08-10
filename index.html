@@ -1,0 +1,156 @@
+<div id="philipshue">
+
+  <div class="row-fluid">
+    <div class="span11">
+      <p>Le plugin <b>philipshue</b> permet de controller les lamps Philips HUE.</p>
+      <p>Le plugin est décrit dans le fichier <i>philipshue.prop</i> :</p>
+<pre>
+{
+  "modules": { 
+    "philipshue": {
+      "description": "Module pour Lampes Philips HUE",
+      "version": "0.3"
+    }
+  }
+}
+</pre>
+	  
+	  
+	<p>
+	Release note :
+	<ul>
+		<li>v0.1 : POC - Allumer/ eteindre + changement de couleur </li>
+		<li>v0.3 : Example avec Bloom et Strip, Ajout de la notion de groupe, Ajout des ambiances</li>
+	</ul>
+	</p>
+	 <br>
+	<p>
+	To do :
+	<ul>
+		<li>Migrer les groupes dans le fichier .prop
+		<li>Migrer les ambiances dans le fichier .prop
+		<li>Gestion des groupes internes a l'application Hue
+	</ul>
+	</p>
+	  
+	  
+	<br><br><br>
+    <p>Il existe 3 types d'actions :
+		<ul>
+		<li>Allumer / eteindre la lumiere</li>
+		<li>Changer la couleurs des lamps</li>
+		<li>Des actions speciales</li>
+		</ul>
+	</p>
+	  
+	  <p><h3> Allumer / Eteindre la lumiere  </h3></p>
+	  <p>
+		Il suffit pour cela de dire : <b><i>Sarah, lumiere.</b></i><br>
+		Si la lumiere est eteinte, Sarah allumera la lumiere, et vice-versa.<br>
+		Il est aussi possible d'utiliser :<br>
+		- Sarah, allume la lumiere<br>
+		- Sarah, eteins la lumiere<br>
+		</P>
+	  
+	  <p><h3> Changer la couleur  </h3></p>
+	  
+		Il faut utiliser le mot-cle  : Change la couleur<br>
+	  
+		Les couleurs possibles sont :
+		<ul>
+			<li>Blanc
+			<li>Bleu
+			<li>Rouge
+			<li>Jaune
+			<li>Orange
+		</ul>
+	
+		<br>
+	  Il faut preciser :
+	  <ul>
+		<li>Toutes les lampes, pour changer toutes les lampes d'un coup
+		<li>une seule lampe, si vous souhaitex en changer qu'une.
+		<li>vous pouvez aussi precisez, le bloom ou le strip, si vous en avez.
+		<li>un groupe (v0.3)
+	  </ul>
+	  
+	  <br>
+	  Ex :
+	  <ul>
+		<li>Sarah, change la couleur de toutes les lampes en bleu
+		<li>Sarah, change la couleur de la lampe de la cuisine en jaune.
+		<li>Sarah, allume le groupe deux
+	  </ul>
+	  
+	<br><br>
+	<b>Il faut definir quelle lampe correspond a quelle piece dans le fichier <i>philipshue.js</i></b>
+	
+	<br>
+	<code>var lights=[["1","bed"],["2","kitchen"],["3","tv"],["4","bloom"],["5","strip"]];</code>
+	<br><br>
+	
+	Ainsi que dans le fichier <i>philipshue.xml</i><br>
+	  <pre>
+			<item>toutes les lampes<tag>out.action.room="-1";</tag></item>
+			<item>la lumiere<tag>out.action.room="-1";</tag></item>
+			
+			<item>la lampe de la chambre<tag>out.action.room="1";</tag></item>
+			<item>la lumiere de la chambre<tag>out.action.room="1";</tag></item>
+			<item>la lampe du lit<tag>out.action.room="1";</tag></item>
+			<item>la lumiere du lit<tag>out.action.room="1";</tag></item>
+			
+			<item>la lampe de la cuisine<tag>out.action.room="2";</tag></item>
+			<item>la lampe de l'entree<tag>out.action.room="2";</tag></item>
+			<item>la lumiere de la cuisine<tag>out.action.room="2";</tag></item>
+			<item>la lumiere de l'entree<tag>out.action.room="2";</tag></item>
+			
+			<item>la lampe du salon<tag>out.action.room="3";</tag></item>
+			<item>la lumiere du salon<tag>out.action.room="3";</tag></item>
+	</pre>
+	 
+	<br><br>
+	<b>De meme pour les groupes</b> : <i>philipshue.js</i> <br>
+	<code>var groups=[["1","1","2","5"] , ["2","3","4"] ];</code>
+	<br><br>
+	
+	Ainsi que dans le fichier <i>philipshue.xml</i><br>
+	<pre>
+	<item repeat="0-1" weight="1.2">
+		<one-of>
+		<item>du groupe un <tag>out.action.group="1";</tag></item>
+		<item>du groupe deux <tag>out.action.group="2";</tag></item>
+		</one-of>
+	</item>
+	</pre>
+		
+		Dans notre exemple, le groupe 1 regroupe les lampes 1, 2 et 5.
+		La commande, "Sarah, eteins le groupe un", va donc eteindre la luminere du lit, de la cuisine et le strip.
+
+		
+	<br><br>		
+		<b> De meme pour les ambiances </b> : <i>philipshue.js</i> <br>
+		<code>
+		var ambiances=	[ <br>
+		["1", "2" , "{\"on\":true,\"bri\":255,\"xy\":\[0.62,0.22\],\"sat\":230}", "5","{\"on\":true,\"bri\":80,\"xy\":\[0.12,0.22\],\"sat\":230}"], <br>
+		["2", "1" , "{\"on\":true,\"bri\":255,\"xy\":\[0.62,0.22\],\"sat\":230}"] <br>
+		];
+		</code>
+	<br><br>
+	Ainsi que dans le fichier <i>philipshue.xml</i><br>
+	<pre>
+	<item>met l'ambiance un <tag>out.action.todo="4";</tag><tag>out.action.ambiance="1";</tag></item> <!-- Change ambiance -->
+	<item>met l'ambiance deux <tag>out.action.todo="4";</tag><tag>out.action.ambiance="2";</tag></item> <!-- Change ambiance -->
+	</pre>
+		
+		
+	  <p><h3> Actions speciales  </h3></p>
+	  <p>
+		<p><b> Le mode Alerte Rouge </b></p>
+		Fait clignoter toutes les lampes en rouge, pendant 30 sec.
+		Ex : Sarah, Alerte rouge
+	  </P>
+	  
+    </div>
+  </div>
+
+</div>
