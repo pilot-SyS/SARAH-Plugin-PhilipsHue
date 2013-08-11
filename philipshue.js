@@ -1,4 +1,3 @@
-
 exports.action = function(data, callback, config){
   
 	var request = require("request");
@@ -25,7 +24,7 @@ exports.action = function(data, callback, config){
 
 	
 	
-	var urllight = 'http://192.168.1.6/api/newdeveloper/lights/';s
+	var urllight = 'http://192.168.1.6/api/newdeveloper/lights/';
 	var urlgroup = 'http://192.168.1.6/api/newdeveloper/groups/';
 	var ustate = '/state';
 	var uaction = '/action';
